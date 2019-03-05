@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap 101 Template</title>
+</head>
+<body>
+<script type="text/javascript" src="../node_modules/vue/dist/vue.js"></script>
+
+  <div id="demo">
+    <component-a url="/profile">
+      这部分会被抛弃，除非用slot
+    </component-a>
+  </div>
+
+<script type="text/javascript">
+    var componentA={
+      template : '<a v-bind:href="url">btn</a>'
+    };
+    var vm=new Vue({
+      el:'#demo',
+      components : {
+        'component-a':componentA
+      },
+      data () {
+        return {
+
+        }
+      }
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap 101 Template</title>
+</head>
+<body>
+<script type="text/javascript" src="../node_modules/vue/dist/vue.js"></script>
+<div id="demo">
+  FirstName：<input type="text" v-model="firstName">
+  LastName：<input type="text" v-model="lastName">
+  FullName：<input type="text" v-model="fullName">
+  <!--下面两行是为了验证computed属性是否能被传输到子组件中，结果是可以-->
+  <!--要注意的是v-bind后面的属性名称，前面的是props中的，
+  后面是父组件传过来的，所以前面的需要改写为用-连接大小写，后面不用-->
+  <computed-plugin v-bind:full-name="fullName"></computed-plugin>
+  <component-a v-bind:full-name="fullName"></component-a>
+</div>
+<script type="text/javascript">
+//  这里注册一个Vue实例下的子组件，它是全局注册的，不需要再在实例中component声明
+    Vue.component('computed-plugin',{
+      props: ['fullName'],
+      data () {
+        return {
+
+        }
+      },
+      template: '<p>全局注册：{{fullName}}</p>'
+    });
+//    在这里注册一个局部组件，也就是局部注册，和上面Vue.component是不同的
+    var componentA={
+      props: ['fullName'],
+      template:'<p>局部注册：{{fullName}}</p>'
+    };
+    var vm=new Vue({
+      el:'#demo',
+      components: {
+        'component-a':componentA
+      },
+      data () {
+        return {
+          firstName:'John',
+          lastName:'Snow'
+        }
+      },
+      computed: {
+        fullName : {
+          set (newValue) {
+            var newArray=newValue.split(' ');
+            this.firstName=newArray[0];
+            this.lastName=newArray[newArray.length-1]
+          },
+          get () {
+            return this.firstName+' '+this.lastName
+          }
+        }
+      }
+    });
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap 101 Template</title>
+</head>
+<body>
+
+<div id="demo">
+  <input type="file" @change="getFile">
+  <button @click="submit">上传</button>
+  <input type="text" v-model="str">
+  <button @click="submitTwo">上传2</button>
+</div>
+
+<script type="text/javascript" src="../node_modules/vue/dist/vue.js"></script>
+<script type="text/javascript" src="../node_modules/vue-resource/dist/vue-resource.js"></script>
+<script type="text/javascript">
+    var vm=new Vue({
+      el:'#demo',
+      data () {
+        return {
+          file:'',
+          str:''
+        }
+      },
+      methods:{
+        getFile () {
+          this.file=event.target.files;
+          console.log(this.file);
+        },
+        submit(state){
+          let formData=new FormData;
+          for(let i=0;i<this.file.length;i++){
+            formData.append("attachment",this.file[i]);
+          }
+//          let url="./files";
+          this.$http.post('http://localhost:3000/receive',formData,{//这里指向一个假后端
+            headers:{
+              'Content-Type':'multipart/form-data'
+            }
+          }).then(function(res){
+            console.log(res);
+
+          })
+        },
+        submitTwo () {
+          this.$http.post('http://localhost:3000/receive',{text:this.str},{emulateJSON:true}).then(function(res){
+            //通过这种方式向nodejs的后端发送消息，由于是跨域请求（前端是:8080，这里因为没启动前端服务所以是63342,后端是:3000），
+            // 所以后端也必须用ajax向前端发送消息，否则前端不会执行成功或失败的function
+            console.log('上传成功');
+//            console.log(res.body);
+          },function(res){
+            console.log('错误代码：'+res.status);
+          });
+        }
+      }
+
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap 101 Template</title>
+  <style>
+    .header-a{
+      width:700px;
+      height:200px;
+      margin:0 auto;
+      position:relative;
+      background:url("./files/headerA.jpg") no-repeat;
+    }
+    .header-a a{
+      width:100%;
+      height:100%;
+      display:block;
+    }
+    .close {
+      cursor:pointer;
+      color:#fff;
+      position:absolute;
+      top:5px;
+      right:5px;
+      background:rgb(129, 117, 117);
+      width: 20px;
+      text-align: center;
+      line-height: 20px;
+    }
+    .main-a{
+      width:700px;
+      height:500px;
+      margin:10px auto;
+      background-color: black;
+    }
+    .footer-a{
+      width:700px;
+      height:100px;
+      margin:0 auto;
+      background-color: #1d3e81;
+    }
+  </style>
+</head>
+<body>
+<div id="demo">
+  <header-a></header-a>
+  <main-a :str="str" @set-str="setStr">
+    <button @click="setLocal">保存</button>
+  </main-a>
+  <footer-a></footer-a>
+</div>
+
+
+<!--<template></template>-->
+
+
+<script type="text/javascript" src="../node_modules/vue/dist/vue.js"></script>
+<script type="text/javascript">
+  var mainA={
+//    model : {      //model是为了锁定组件到底监控哪种行为，如果是默认行为不需要使用model
+//      prop:'str',
+//      event:'change'
+//    },
+    props : {
+      str : {
+        type:String,
+        require:true
+      }
+    },
+    data () {
+      return {
+        strChange :this.str   //这里可以直接获取props里的数据
+      }
+    },
+    watch : {
+      str (newVal,oldVal) {   //watch是为了str动态变化时，子组件也能随之改变，如果不用这个可能会获取失败，而且后台会warning
+        this.strChange=newVal
+      }
+    },
+    template :
+      '<div class="main-a">\n' +
+      '  <input type="text" v-model="strChange" @change="$emit(\'set-str\',$event.target.value)">\n' +
+      '  <slot></slot>\n'+
+      '</div>'
+  };
+  var headerA={
+    template :
+      '<div class="header-a">\n' +
+      '  <a href="#">\n' +
+      '  </a>\n' +
+      '  <i class="close">x</i>\n' +
+      '</div>'
+  };
+  var footerA={
+    template :
+    '<div class="footer-a">\n' +
+    '\n' +
+    '</div>'
+  };
+  var vm=new Vue({
+    components : {
+      'main-a':mainA,
+//      'input-a':inputA,
+      'header-a':headerA,
+      'footer-a':footerA
+    },
+    el:'#demo',
+    data () {
+      return {
+        str:'123'
+      }
+    },
+    methods : {
+      setStr (data) {
+        this.str=data
+      },
+      setLocal () {
+        localStorage.setItem('strLocal',this.str) //没什么可说的，添加local，前面是key后面是value
+      }
+    },
+    mounted () {
+      if(localStorage.getItem('strLocal')){
+        this.str= localStorage.getItem('strLocal')  //用钩子将 local里的值赋给str
+      }
+    }
+  });
+
+</script>
+
+
+</body>
+</html>

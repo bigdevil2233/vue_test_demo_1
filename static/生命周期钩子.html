@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap 101 Template</title>
+</head>
+<body>
+<div id="demo">
+  <p id='htm'><span>html数据</span></p>
+  <p>{{str}}</p>
+  <p>{{strPlus}}</p>
+</div>
+<script type="text/javascript" src="../node_modules/vue/dist/vue.js"></script>
+<script type="text/javascript">
+  var htm=document.getElementById('htm').textContent;
+  var vm=new Vue({
+    el:'#demo',
+    data () {
+      return {
+        str:'data数据'+htm
+      }
+    },
+    computed : {
+      strPlus () {
+        return this.str+'和computed数据'
+      }
+    },
+    beforeCreate () {
+      alert('beforeCreated执行');
+    },
+    created () {
+      alert('created执行');
+    },
+    beforeMount () {
+      alert('beforeMount执行');
+    },
+    mounted () {
+      alert('mounted执行');
+    }
+  });
+
+</script>
+
+</body>
+</html>

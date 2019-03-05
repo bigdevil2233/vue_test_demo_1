@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap 101 Template</title>
+</head>
+<body>
+<div id="demo">
+  <span>{{str}}</span>
+  <input-a @change-str="changeStr"></input-a>
+
+</div>
+<script type="text/javascript" src="../node_modules/vue/dist/vue.js"></script>
+<script type="text/javascript">
+    var inputA={
+      model: {   //model用锁定组件默认v-model的方式确定组件的原生方法
+                  //例如组件是div包裹着input，则组件不等于input，也就导致一些对子组件的操作不起作用
+                    //所以将组件中某个元素的原生方法等于组件的原生方法，这样就可以对组件进行操作
+        prop:'checked',
+        event:'change'
+      },
+      props : {
+        checked: {
+          type: Boolean,
+          require:true
+        }
+      },
+      template :
+      '  <div>\n' +
+      '    <input type="checkbox" name="selectA" value="改变文本1" :checked="checked" @change="$emit(\'change-str\',$event.target.value)">\n' +
+      '    <input type="checkbox" name="selectA" value="改变文本2" :checked="checked" @change="$emit(\'change-str\',$event.target.value)">\n' +
+      '    <input type="checkbox" name="selectA" value="改变文本3" :checked="checked" @change="$emit(\'change-str\',$event.target.value)">\n' +
+      '  </div>'
+    };
+    var vm=new Vue({
+      el: '#demo',
+      components : {
+        'input-a':inputA
+      },
+      data () {
+        return {
+          str : '默认文本'
+        }
+      },
+      methods : {
+        changeStr (data) {
+//          console.log(typeof this.str);
+          if(typeof this.str==='string'){
+            this.str=[];
+            this.str.push(data)
+          }else{
+            this.str.push(data)
+          }
+//          this.str=[...this.str];
+
+//          console.log(data);
+        }
+      }
+
+    });
+</script>
+</body>
+</html>

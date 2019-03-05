@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap 101 Template</title>
+</head>
+<body>
+  <div id="demo">
+    <span>{{msg}}</span>
+    <button-a @send-msg="msgChange"></button-a>
+    <!--这里要在触发emit的组件上监听-->
+
+  </div>
+<script type="text/javascript" src="../node_modules/vue/dist/vue.js"></script>
+<script type="text/javascript">
+    var buttonA={
+      template : '<button @click="$emit(\'send-msg\',\'改变文本\')">改变文本</button>'
+      //emit传入第一个参数是发送消息的名称，建议以xxx-yyy的格式，因为htm不分大小写，
+      // 第二个参数是要发送的数据，可以在子组件data里写一个对象包含所有要传给父组件的数据
+    };
+    var vm=new Vue({
+      el:'#demo',
+      components : {
+        'button-a':buttonA
+      },
+      data () {
+        return {
+          msg : '未更改文本'
+        }
+      },
+      methods : {
+        msgChange (data) {
+          this.msg=data;//emit的内容都在这里了，如果数据时对象的话，用data.xxx获取就行了
+        }
+      }
+    });
+
+</script>
+</body>
+</html>

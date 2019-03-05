@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap 101 Template</title>
+</head>
+<body>
+<div id="demo">
+  <!--下一行最终会显示1234，因为父组件的内容会替换掉slot原来的，如果没有内容，则显示slot里的-->
+  <!--<comp-a>1234</comp-a>-->
+  <comp-a v-bind:todos="todos">
+    <!--下面这行是给slot作用域赋值，即让作用域名为slotScope，这样就能在template中使用作用域中的属性-->
+    <template slot-scope="slotScope">
+      <span v-if="slotScope.todo.isComplate">√</span>
+      <span v-else>×</span>
+      {{slotScope.todo.text}}
+    </template>
+  </comp-a>
+</div>
+<script type="text/javascript" src="../node_modules/vue/dist/vue.js"></script>
+<script type="text/javascript">
+    var compA={
+      props:['todos'],
+      data () {
+        return {
+
+        }
+      },
+      template:'  ' +
+      '  <ul>\n' +
+      '    <li v-for="todo in todos" v-bind:key="todo.id">\n' +
+//            给slot所有和其上下文相关的数据，在这里是todo
+      '      <slot v-bind:todo="todo"></slot>\n' +
+      '    </li>\n' +
+      '  </ul>'
+    };
+    var vm=new Vue({
+      el:'#demo',
+      components:{
+        'comp-a':compA
+      },
+      data () {
+        return {
+          todos:[
+            {id:0,text:'起床',isComplate:true},
+            {id:1,text:'刷牙',isComplate:true},
+            {id:2,text:'吃早餐',isComplate:true},
+            {id:3,text:'吃中餐',isComplate:true},
+            {id:4,text:'学习',isComplate:false}
+          ]
+        }
+      }
+    });
+</script>
+</body>
+</html>

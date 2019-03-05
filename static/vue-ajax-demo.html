@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap 101 Template</title>
+  <style>
+    /*避免刷新时闪现vue模板*/
+    [v-cloak]{display:none}
+  </style>
+</head>
+<body>
+
+  <div v-cloak id="demo">
+    <input type="text" v-model="str.text">
+    <button @click="posta()">提交</button>
+    <!--<input type="submit" value="提交">-->
+    <p>{{strGet}}</p>
+  </div>
+<script type="text/javascript" src="../node_modules/vue/dist/vue.js"></script>
+<script type="text/javascript" src="../node_modules/vue-resource/dist/vue-resource.js"></script>
+<script type="text/javascript">
+    var ajaxDemo=document.getElementById('ajaxDemo');
+    var vm=new Vue({
+      el:'#demo',
+      data () {
+        return {
+          str:{},
+          strGet:''
+        }
+      },
+      methods : {
+        get () {
+          this.$http.get('../src/assets/ajax_info.json').then(function(res){
+            console.log(res.body);
+            this.strGet=res.body;
+          },function(res){
+            console.log(res.status);
+          })
+        },
+        posta () {//post和get只是向后台传一条信息，如何处理是后台的事情，不要以为传过去就能干什么，想多了
+          this.$http.post('../src/assets/ajax_info.json',{'name':"菜鸟教程",'url':"http://www.runoob.com"},{emulateJSON:true}).then(function(res){
+            fs.appendFile('../src/assets/ajax_info.json', 'new data', function (err) {
+              if (err) {
+                // append failed
+              } else {
+                // done
+              }
+            })
+//          console.log(res.body);
+//            this.get();
+          },function(res){
+            console.log(res.status);
+          })
+        }
+      }
+    });
+</script>
+</body>
+</html>

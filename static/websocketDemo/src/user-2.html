@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap 101 Template</title>
+</head>
+<body>
+  <div id="msg">
+
+  </div>
+  <script type="text/javascript">
+    const msg=document.querySelector('#msg');
+
+    if(window.WebSocket){
+      const ws=new WebSocket('ws://localhost:8001');
+
+      ws.onopen=function(e){
+        console.log('连接正在建立');
+        ws.send('user2');
+      };
+      ws.onclose=function(e){
+        console.log('连接已关闭');
+      };
+      ws.onerror=function(e){
+        console.log('连接出现错误');
+      };
+      ws.onmessage=function(e){
+//        console.log('连接建立成功');
+        console.log(e);
+        msg.innerHTML+=e.data+"<br>";
+      };
+
+
+    }
+
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap 101 Template</title>
+</head>
+<body>
+<!--这部分是演示一个vue父组件如何向子组件传递数据-->
+<!--这只是传递一个数字，如果是数组或对象应参考官网组件基础部分-->
+  <div id="demo">
+    <button @click="add">You have click {{count}} times</button>
+    <!--组件，上面的按钮按下后，子组件中的数字也会变化-->
+    <component-demo v-bind:count="count"></component-demo>
+  </div>
+
+  <script type="text/javascript" src="../node_modules/vue/dist/vue.js"></script>
+  <script type="text/javascript">
+    Vue.component('component-demo',{
+      props: ['count'],
+      template: '<p>You have click {{count}} times</p>'
+    });
+    var vm=new Vue({
+      el:'#demo',
+      data () {
+        return {
+          count : 0
+        }
+      },
+      methods: {
+        add () {
+          this.count++
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>

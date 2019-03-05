@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap 101 Template</title>
+</head>
+<body>
+<div id="demo">
+  <input-a v-on:submit="sendChildMsg"></input-a>
+  <component-a v-bind:str="str"></component-a>
+</div>
+<script type="text/javascript" src="../node_modules/vue/dist/vue.js"></script>
+<script type="text/javascript">
+//   这部分测试vue子组件如何向父组件传递数据，并且再和另一个子组件结合
+    var componentA={
+      props:['str'],
+      template:'<p>{{str}}</p>'
+    };
+    var inputA={
+      data () {
+        return {
+          stra:''
+        }
+      },
+      template:'<input type="text" v-model="stra" @keyup.enter="$emit(\'submit\',stra)">'
+    };
+    var vm=new Vue({
+      el:'#demo',
+      components:{
+        'input-a':inputA,
+        'component-a':componentA
+      },
+      data () {
+        return {
+          str:''
+        }
+      },
+      methods:{
+        sendChildMsg (data) {
+          console.log(data);
+          this.str=data
+        }
+      }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap 101 Template</title>
+</head>
+<body>
+<div id="app">
+
+</div>
+</body>
+<script type="text/javascript" src="../node_modules/vue/dist/vue.js"></script>
+<!--<script src='./vue.min.js'></script>-->
+<script>
+  new Vue({
+    el: '#app',
+    data:{
+      msg: 'hello Vue',
+      count: 10,
+    },
+    template:  '<div><span>{{msg}}</span><input type="text" v-model="msg"> <span>{{count}}</span></div>',
+    beforeUpdate() {
+      this.count = 100;
+      console.log('beforeUpdate:'+this.$el.innerHTML);
+      // <span>hello Vue</span><input type="text"> <span>10</span>
+      // <span>hello Vu</span><input type="text"> <span>10</span>
+    },
+    updated() {
+      console.log('update:'+this.$el.innerHTML);
+      // <span>hello Vu</span><input type="text"> <span>100</span>
+    }
+  })
+</script>
+
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap 101 Template</title>
+</head>
+<body>
+  <div id="demo">
+    <input type="text" v-model="str">
+    <button @click="setAxios">AXIOS</button>
+    <span>{{result}}</span>
+  </div>
+  <script type="text/javascript" src="../node_modules/axios/dist/axios.min.js"></script>
+  <script type="text/javascript" src="../node_modules/vue/dist/vue.js"></script>
+  <script type="text/javascript">
+      var vm=new Vue({
+        el:'#demo',
+        data () {
+          return {
+            str:'',
+            result:'未接收数据'
+          }
+        },
+        methods : {
+          setAxios () {
+            axios.post('http://localhost:3000/axiostest',{
+              ID:this.str
+            })
+              .then(function (response) {
+                console.log('上传成功');
+                this.result=response
+              })
+              .catch(function (error) {
+                console.log(error);
+              })
+          }
+        }
+      });
+  </script>
+</body>
+</html>

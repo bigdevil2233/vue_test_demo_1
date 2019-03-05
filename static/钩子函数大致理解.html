@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap 101 Template</title>
+</head>
+<body>
+  <div id="demo">
+    <component-a :level="level">Slot</component-a>
+  </div>
+
+<script type="text/javascript" src="../node_modules/vue/dist/vue.js"></script>
+<script type="text/javascript">
+    var componentA={
+      props:{
+        level : {
+          type:Number,
+          required:true
+        }
+      },
+      render (createElement) {
+        return createElement (
+          'h'+this.level,
+          this.$slots.default
+        );
+      }
+
+    };
+    var vm=new Vue({
+      components:{
+        'component-a':componentA
+      },
+      el:'#demo',
+      data () {
+        return {
+          str:'钩子测试st1',
+          str2:'钩子测试st2',
+          obj:{},
+          level:2
+        }
+      },
+//      template : '<div>{{str}}' +
+//                   '<input type="text" v-model="str">' +
+//                    '<span>{{str2}}</span><span>{{obj.str3}}</span>' +
+//                    '<button @click="des">Destroy</button>'+
+//                    '<component-a :level="level">Slot</component-a>'+
+//                 '</div>',
+      beforeCreate () {
+        console.log(this.str,this.$el);//undefined undefined，data还没获取
+      },
+      created () {
+        this.str='created修改后';
+        console.log(this.str,this.$el);//created修改后 undefined，data获取了也能操作但其他项不能获取
+      },
+      beforeMount () {
+        this.str='beforeMount修改后';//这一步DOM还没有被完全渲染，子组件标签仍然显示component-a而不是h2
+        console.log(this.str,this.$el,this.compStr);//beforeMount修改后 <div id=​"demo">​…​</div>，可以获得编译前的东西
+      },
+      mounted () {
+//        this.str='mounted修改后';//事实证明，如果在mounted中修改了data，beforeUpdate和updated都会触发
+        console.log(this.str,this.$el,this.compStr);//mounted修改后 <span>​mounted修改后​</span>​，编译后的也能获取了，这之后页面才显示
+      },
+      beforeUpdate () {
+        this.str2='beforeUpdate修改后';//会在mounted开始执行后，如果data中有属性修改后触发，可参考上面
+        console.log('beforeUpdate修改后【'+this.str,this.str2,this.$el.innerHTML);
+        //这里如果依然用$el而不是$el.innerHTML,beforeUpdate和updated的结果是一样的，我也不知道为什么
+      },
+      updated () {
+        //updated中最好不要再修改data里的东西，容易死循环
+        console.log('updated修改后【'+this.str,this.str2,this.$el.innerHTML);
+      },
+      beforeDestroy () {
+        this.$set(this.obj,'str3','beforeDestroy添加');//不会执行了
+      },
+      destroy () {
+
+        alert('I love Vue,mf');//不会执行了
+      },
+      methods : {
+        des () {
+          this.$destroy();
+        }
+      },
+      computed : {
+        compStr () {
+          return this.str+'computed修改后'
+        }
+      }
+
+    });
+</script>
+</body>
+</html>
